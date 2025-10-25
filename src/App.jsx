@@ -272,17 +272,122 @@ const App = () => {
                 </div>
             </section>
 
-            {/* Mapping and Capacity/Growth Visualizations */}
+            {/* Dashboard Preview Section */}
             <section className="mb-10">
-                <div className="grid grid-cols-12 gap-6">
-                    {/* Bar Chart: Buyer Green Growth */}
-                    <BuyerGreenGrowthChart buyers={buyersWithGrowth} />
+                <div className="bg-white rounded-xl shadow-sm border border-emerald-200 p-6">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-3">Dashboard Preview</h2>
+                    <p className="text-gray-600 mb-4">
+                        Below is a demonstration of how your trading activities and partnerships will be visualized on the CarbonBridge Exchange dashboard.
+                    </p>
+                    <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-6">
+                        <p className="text-emerald-700 font-medium mb-2">🎉 Limited Time Offer</p>
+                        <p className="text-gray-600">
+                            We are currently offering free registration to selected clients. Soon, we will be releasing a waiting list for the full dashboard, which will include comprehensive trading functionalities and real-time market insights.
+                        </p>
+                    </div>
 
-                    {/* Seller Green Capacity Display */}
-                    <CapacityDisplay sellers={sellers} />
+                    {/* Visualization Components */}
+                    <div className="space-y-6">
+                        {/* Grid for Buyer Growth and Capacity */}
+                        <div className="grid grid-cols-12 gap-6">
+                            {/* Bar Chart: Buyer Green Growth */}
+                            <div className="col-span-12 lg:col-span-8">
+                                <h3 className="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                                    <TrendingUp className="w-5 h-5 text-emerald-500 mr-2" />
+                                    Buyers' Green Growth Status (Goal Met)
+                                </h3>
+                                <div className="space-y-6">
+                                    {buyersWithGrowth.sort((a, b) => b.growthPercentage - a.growthPercentage).map(buyer => (
+                                        <div key={buyer.id} className="flex flex-col">
+                                            <div className="flex justify-between items-center mb-1">
+                                                <span className="text-sm font-medium text-gray-600">{buyer.name}</span>
+                                                <span className={`text-base font-bold ${buyer.growthPercentage === 100 ? 'text-green-600' : 'text-emerald-500'}`}>
+                                                    {buyer.growthPercentage}%
+                                                </span>
+                                            </div>
+                                            <div className="w-full bg-gray-200 rounded-md h-6 overflow-hidden">
+                                                <div
+                                                    className={`h-full transition-all duration-500 ease-out ${buyer.growthPercentage === 100 ? 'bg-green-600' : 'bg-emerald-400'}`}
+                                                    style={{ width: `${buyer.growthPercentage}%` }}
+                                                ></div>
+                                            </div>
+                                            <p className="text-xs text-gray-500 mt-1">
+                                                Purchased: {buyer.totalPurchases.toLocaleString()} / Goal: {buyer.reductionGoal.toLocaleString()} units
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
 
-                    {/* Mapping Table */}
-                    <TradingMatrix sellerBuyerMap={sellerBuyerMap} />
+                            {/* Seller Green Capacity Display */}
+                            <div className="col-span-12 lg:col-span-4">
+                                <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                    <Leaf className="w-5 h-5 text-emerald-500 mr-2" />
+                                    Sellers' Green Capacity
+                                </h3>
+                                <div className="space-y-4">
+                                    {sellers.map(seller => (
+                                        <div key={seller.id} className="text-sm">
+                                            <div className="flex justify-between mb-1 text-gray-600">
+                                                <span className="font-medium">{seller.name}</span>
+                                                <span>{seller.unitsSold.toLocaleString()} / {seller.capacity.toLocaleString()} Units</span>
+                                            </div>
+                                            <div className="w-full bg-gray-200 rounded-full h-2.5">
+                                                <div
+                                                    className={`h-2.5 rounded-full bg-emerald-400`}
+                                                    style={{ width: `${(seller.unitsSold / seller.capacity) * 100}%` }}
+                                                ></div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Mapping Table */}
+                        <div className="pt-6 border-t border-emerald-100">
+                            <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                                <Users className="w-5 h-5 text-emerald-500 mr-2" />
+                                Active Seller-Buyer Mapping
+                            </h3>
+                            <div className="overflow-x-auto">
+                                <table className="min-w-full divide-y divide-gray-200">
+                                    <thead className="bg-emerald-100/50">
+                                        <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                                Seller
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                                                Trading With (Buyers)
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-200">
+                                        {sellerBuyerMap.map((seller, index) => (
+                                            <tr key={seller.id} className={index % 2 === 0 ? 'bg-white' : 'bg-emerald-50/50 hover:bg-emerald-100 transition-colors'}>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                                                    {seller.name}
+                                                </td>
+                                                <td className="px-6 py-4 text-sm text-gray-600">
+                                                    {seller.soldTo.length > 0 ? (
+                                                        <div className="flex flex-wrap gap-2">
+                                                            {seller.soldTo.map(buyerName => (
+                                                                <span key={buyerName} className="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-700 border border-emerald-500/50">
+                                                                    {buyerName}
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                    ) : (
+                                                        <span className="text-gray-500 italic">No active trades yet.</span>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
