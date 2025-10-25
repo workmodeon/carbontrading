@@ -1,11 +1,11 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { Leaf, ShoppingCart, Users, TrendingUp, DollarSign, ExternalLink } from 'lucide-react';
+import { Leaf, Users, TrendingUp, ExternalLink } from 'lucide-react';
 
 // --- MOCK DATA ---
 const initialSellers = [
-    { id: 'S1', name: "EcoForest Solutions", capacity: 5000, unitsSold: 1200, price: 15.00, color: "green-500" },
-    { id: 'S2', name: "Renewable Wind Farm Co.", capacity: 8000, unitsSold: 3500, price: 14.50, color: "blue-500" },
-    { id: 'S3', name: "Sustainable Peatland", capacity: 3000, unitsSold: 900, price: 16.20, color: "amber-500" },
+    { id: 'S1', name: "EcoForest Solutions", capacity: 5000, unitsSold: 1200, price: 15.00, color: "emerald-500" },
+    { id: 'S2', name: "Renewable Wind Farm Co.", capacity: 8000, unitsSold: 3500, price: 14.50, color: "sky-500" },
+    { id: 'S3', name: "Sustainable Peatland", capacity: 3000, unitsSold: 900, price: 16.20, color: "lime-500" },
 ];
 
 const initialBuyers = [
@@ -82,55 +82,55 @@ const useTradingData = () => {
 
 // --- Sub Components ---
 
+// MetricCard is unused but retained structure for completeness
 const MetricCard = ({ icon: Icon, title, value, unit, color }) => (
-    <div className="flex flex-col items-start p-6 bg-gray-800 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl border border-gray-700">
+    <div className="flex flex-col items-start p-6 bg-white rounded-xl shadow-md transition-all duration-300 hover:shadow-lg border border-emerald-100">
         <Icon className={`w-8 h-8 ${color} mb-3`} />
-        <p className="text-sm font-medium text-gray-400">{title}</p>
-        <div className="text-3xl font-bold text-white mt-1">
+        <p className="text-sm font-medium text-gray-600">{title}</p>
+        <div className="text-3xl font-bold text-gray-800 mt-1">
             {value.toLocaleString()}
-            <span className="text-sm font-normal text-gray-400 ml-1">{unit}</span>
+            <span className="text-sm font-normal text-gray-500 ml-1">{unit}</span>
         </div>
     </div>
 );
 
-const RegistrationCard = ({ title, url, description, color }) => {
-    const borderClass = color === 'green-500' ? 'border-green-500' : 'border-blue-500';
-    const buttonBgClass = color === 'green-500' ? 'bg-green-500 hover:bg-green-600' : 'bg-blue-500 hover:bg-blue-600';
-    
-    return (
-        <div className={`p-6 bg-gray-800 rounded-xl shadow-lg border-t-4 ${borderClass} flex flex-col items-start transition-transform duration-300 hover:scale-[1.02]`}>
-            <h3 className="text-xl font-semibold text-white mb-2">{title} Registration</h3>
-            <p className="text-gray-400 text-sm mb-4">{description}</p>
-            <a
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`mt-auto px-4 py-2 text-sm font-medium ${buttonBgClass} text-white rounded-lg flex items-center transition-colors shadow-md`}
-                onClick={() => console.log(`Redirecting to ${title} registration form.`)}
-            >
-                Register Now
-                <ExternalLink className="w-4 h-4 ml-2" />
-            </a>
-        </div>
-    );
-};
+const RegistrationCard = ({ title, url, description, color }) => (
+    // Card styling changed to white background with light border for pastel look
+    <div className={`p-6 bg-white rounded-xl shadow-sm border border-emerald-200 flex flex-col items-start transition-all duration-300 hover:scale-[1.01] hover:shadow-md hover:ring-1 hover:ring-${color}/50`}>
+        <h3 className="text-xl font-semibold text-gray-800 mb-2">{title} Registration</h3>
+        <p className="text-gray-600 text-sm mb-4">{description}</p>
+        <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            // Button uses a subtle border and text color
+            className={`mt-auto px-4 py-2 text-sm font-medium border border-emerald-500/50 text-emerald-600 rounded-lg hover:bg-emerald-500/10 flex items-center transition-colors shadow-sm`}
+            onClick={() => console.log(`Redirecting to ${title} registration form.`)}
+        >
+            Register Now
+            <ExternalLink className="w-4 h-4 ml-2" />
+        </a>
+    </div>
+);
 
 const CapacityDisplay = ({ sellers }) => (
-    <div className="col-span-12 lg:col-span-4 p-6 bg-gray-800 rounded-xl shadow-lg border border-gray-700">
-        <h2 className="text-xl font-semibold text-white mb-4 flex items-center">
-            <Leaf className="w-5 h-5 text-green-400 mr-2" />
+    // Card styling changed to white background with light border
+    <div className="col-span-12 lg:col-span-4 p-6 bg-white rounded-xl shadow-sm border border-emerald-200">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+            <Leaf className="w-5 h-5 text-emerald-500 mr-2" />
             Sellers' Green Capacity
         </h2>
         <div className="space-y-4">
             {sellers.map(seller => (
                 <div key={seller.id} className="text-sm">
-                    <div className="flex justify-between mb-1 text-gray-300">
+                    <div className="flex justify-between mb-1 text-gray-600">
                         <span className="font-medium">{seller.name}</span>
                         <span>{seller.unitsSold.toLocaleString()} / {seller.capacity.toLocaleString()} Units</span>
                     </div>
-                    <div className="w-full bg-gray-700 rounded-full h-2.5">
+                    {/* Pastel green progress bar fill */}
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
                         <div
-                            className={`h-2.5 rounded-full bg-${seller.color}`}
+                            className={`h-2.5 rounded-full bg-emerald-400`}
                             style={{ width: `${(seller.unitsSold / seller.capacity) * 100}%` }}
                         ></div>
                     </div>
@@ -145,24 +145,27 @@ const BuyerGreenGrowthChart = ({ buyers }) => {
     const sortedBuyers = [...buyers].sort((a, b) => b.growthPercentage - a.growthPercentage);
 
     return (
-        <div className="col-span-12 lg:col-span-8 p-6 bg-gray-800 rounded-xl shadow-lg border border-gray-700">
-            <h2 className="text-xl font-semibold text-white mb-6 flex items-center">
-                <TrendingUp className="w-5 h-5 text-purple-400 mr-2" />
+        // Card styling changed to white background with light border
+        <div className="col-span-12 lg:col-span-8 p-6 bg-white rounded-xl shadow-sm border border-emerald-200">
+            <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center">
+                {/* Emerald icon color */}
+                <TrendingUp className="w-5 h-5 text-emerald-500 mr-2" />
                 Buyers' Green Growth Status (Goal Met)
             </h2>
             <div className="space-y-6">
                 {sortedBuyers.map(buyer => (
                     <div key={buyer.id} className="flex flex-col">
                         <div className="flex justify-between items-center mb-1">
-                            <span className="text-sm font-medium text-gray-300">{buyer.name}</span>
-                            <span className={`text-base font-bold ${buyer.growthPercentage === 100 ? 'text-green-400' : 'text-purple-400'}`}>
+                            <span className="text-sm font-medium text-gray-600">{buyer.name}</span>
+                            {/* Emerald percentage text color */}
+                            <span className={`text-base font-bold ${buyer.growthPercentage === 100 ? 'text-green-600' : 'text-emerald-500'}`}>
                                 {buyer.growthPercentage}%
                             </span>
                         </div>
-                        {/* Bar chart using div styling */}
-                        <div className="w-full bg-gray-700 rounded-md h-6 overflow-hidden">
+                        {/* Bar chart using div styling with light track and pastel fill */}
+                        <div className="w-full bg-gray-200 rounded-md h-6 overflow-hidden">
                             <div
-                                className={`h-full transition-all duration-500 ease-out ${buyer.growthPercentage === 100 ? 'bg-green-600' : 'bg-purple-600'}`}
+                                className={`h-full transition-all duration-500 ease-out ${buyer.growthPercentage === 100 ? 'bg-green-600' : 'bg-emerald-400'}`}
                                 style={{ width: `${buyer.growthPercentage}%` }}
                             ></div>
                         </div>
@@ -178,34 +181,38 @@ const BuyerGreenGrowthChart = ({ buyers }) => {
 
 
 const TradingMatrix = ({ sellerBuyerMap }) => (
-    <div className="col-span-12 p-6 bg-gray-800 rounded-xl shadow-lg border border-gray-700">
-        <h2 className="text-xl font-semibold text-white mb-4 flex items-center">
-            <Users className="w-5 h-5 text-yellow-400 mr-2" />
+    // Card styling changed to white background with light border
+    <div className="col-span-12 p-6 bg-white rounded-xl shadow-sm border border-emerald-200">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+            {/* Emerald icon color */}
+            <Users className="w-5 h-5 text-emerald-500 mr-2" />
             Active Seller-Buyer Mapping
         </h2>
         <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-700">
-                <thead className="bg-gray-700/50">
+            <table className="min-w-full divide-y divide-gray-200">
+                {/* Table header is a light pastel green */}
+                <thead className="bg-emerald-100/50">
                     <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                             Seller
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                             Trading With (Buyers)
                         </th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-700">
+                <tbody className="divide-y divide-gray-200">
                     {sellerBuyerMap.map((seller, index) => (
-                        <tr key={seller.id} className={index % 2 === 0 ? 'bg-gray-800' : 'bg-gray-800/80 hover:bg-gray-700/50 transition-colors'}>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
+                        <tr key={seller.id} className={index % 2 === 0 ? 'bg-white' : 'bg-emerald-50/50 hover:bg-emerald-100 transition-colors'}>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
                                 {seller.name}
                             </td>
-                            <td className="px-6 py-4 text-sm text-gray-400">
+                            <td className="px-6 py-4 text-sm text-gray-600">
                                 {seller.soldTo.length > 0 ? (
                                     <div className="flex flex-wrap gap-2">
                                         {seller.soldTo.map(buyerName => (
-                                            <span key={buyerName} className="px-3 py-1 text-xs font-semibold rounded-full bg-blue-600/30 text-blue-400 border border-blue-500">
+                                            // Pastel green badge styling
+                                            <span key={buyerName} className="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-700 border border-emerald-500/50">
                                                 {buyerName}
                                             </span>
                                         ))}
@@ -227,73 +234,40 @@ const TradingMatrix = ({ sellerBuyerMap }) => (
 
 const App = () => {
     const { sellers, metrics } = useTradingData();
-    const { totalVolume, totalValue, averagePrice, capacityUtilization, buyersWithGrowth, sellerBuyerMap } = metrics;
+    const { buyersWithGrowth, sellerBuyerMap } = metrics; 
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white font-sans p-4 sm:p-8">
-            <header className="mb-8 border-b border-gray-700/50 pb-4">
-                {/* Added 'Product of Zissions' here */}
-                <p className="text-xs font-semibold text-teal-400 uppercase tracking-widest mb-1">
+        // Main background changed to a very light, subtle emerald green
+        <div className="min-h-screen bg-emerald-50 text-gray-800 font-sans p-4 sm:p-8">
+            <header className="mb-8 border-b border-emerald-200 pb-4">
+                {/* Pastel green for Zissions tag */}
+                <p className="text-xs font-semibold text-emerald-600 uppercase tracking-widest mb-1">
                     Product of Zissions
                 </p>
-                <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-teal-500">
+                {/* Title gradient using soft green and mint tones */}
+                <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-500">
                     CarbonBridge Exchange
                 </h1>
-                <p className="text-gray-400 mt-1">
+                <p className="text-gray-600 mt-1">
                     Decarbonization Trading Platform Metrics Dashboard
                 </p>
             </header>
 
             {/* Registration Section */}
             <section className="mb-10">
-                <h2 className="text-2xl font-bold text-white mb-4">Platform Registration</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Platform Registration</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <RegistrationCard
                         title="Seller"
                         url="https://forms.gle/1WcFs1boTXogUj2q7"
                         description="Register your carbon-reducing assets and capacity to connect with corporate buyers."
-                        color="green-500"
+                        color="emerald-500"
                     />
                     <RegistrationCard
                         title="Buyer"
                         url="https://forms.gle/B3CgMaibptdmDXzBA"
                         description="Submit your decarbonization goals and start purchasing carbon credits instantly."
-                        color="blue-500"
-                    />
-                </div>
-            </section>
-
-            {/* Carbon Trading Metrics */}
-            <section className="mb-10">
-                <h2 className="text-2xl font-bold text-white mb-4">Trading Metrics Overview</h2>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                    <MetricCard
-                        icon={ShoppingCart}
-                        title="Total Volume Traded"
-                        value={totalVolume}
-                        unit="Units"
-                        color="text-teal-400"
-                    />
-                    <MetricCard
-                        icon={DollarSign}
-                        title="Total Transaction Value"
-                        value={Math.round(totalValue / 1000)}
-                        unit="k USD"
-                        color="text-yellow-400"
-                    />
-                    <MetricCard
-                        icon={TrendingUp}
-                        title="Avg. Price Per Unit"
-                        value={averagePrice.toFixed(2)}
-                        unit="USD"
-                        color="text-red-400"
-                    />
-                    <MetricCard
-                        icon={Leaf}
-                        title="Capacity Utilization"
-                        value={capacityUtilization}
-                        unit="%"
-                        color="text-green-400"
+                        color="sky-500"
                     />
                 </div>
             </section>
@@ -312,7 +286,7 @@ const App = () => {
                 </div>
             </section>
 
-            <footer className="mt-10 pt-4 border-t border-gray-700 text-center text-sm text-gray-500">
+            <footer className="mt-10 pt-4 border-t border-emerald-200 text-center text-sm text-gray-500">
                 CarbonBridge Exchange | Real-time Data Simulation (Mock Data) | Powered by Zissions
             </footer>
         </div>
